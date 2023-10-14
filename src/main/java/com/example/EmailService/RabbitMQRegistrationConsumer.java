@@ -16,24 +16,23 @@ public class RabbitMQRegistrationConsumer {
     }
 
     //метод будет вызван при получении сообщения из указанной очереди (your-queue-name).
-    @RabbitListener(queues = "email-registration-queue")
+    @RabbitListener(queues = "email-queue")
     public void receiveMessage(@Header("Operation") String header,
-                               @Payload String message)  {
-        
-        System.out.println("Операция: "+header);
+                               @Payload String message) {
+
+        System.out.println("Операция: " + header);
         System.out.println("Получили сообщение: \n" + message);
         // Создаю экземпляр Gson
         Gson gson = new Gson();
         // Преобразую JSON-строку в объект MessageDTO
         MessageDTO messageDTO = gson.fromJson(message, MessageDTO.class);
-
-        if(header.equals("Registration")){
+        if (header.equals("Registration")) {
             System.out.println("зашли в условие в RabbitMQRegistrationConsumer");
             String email = messageDTO.getEmail();
             String subject = "Успешная регистрация";
-            String body = messageDTO.getFirstName()+" "+messageDTO.getLastName()+" "
-                    +"ваша регистрация в сервисе доставки прошла успешно!";
-            EmailMessage emailMessage=new EmailMessage(email,subject,body);
+            String body = messageDTO.getFirstName() + " " + messageDTO.getLastName() + " "
+                    + "ваша регистрация в сервисе доставки прошла успешно!";
+            EmailMessage emailMessage = new EmailMessage(email, subject, body);
 
             // Отправляю письмо с использованием EmailService
             emailService.sendEmail1(emailMessage);
@@ -41,7 +40,6 @@ public class RabbitMQRegistrationConsumer {
         //else if (header.equals("Other")) {
 //
 //        }
-
 
     }
 
