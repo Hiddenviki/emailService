@@ -1,26 +1,38 @@
 package com.example.EmailService;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+//import org.springframework.mail.SimpleMailMessage;
+//import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-@Service
-@Slf4j
-public class EmailService {
-    private final JavaMailSender javaMailSender;
+import javax.mail.MessagingException;
+import java.io.IOException;
 
-    public EmailService(JavaMailSender javaMailSender) {
-        this.javaMailSender = javaMailSender;
-    }
+@Service
+public class EmailService {
+//    private final JavaMailSender javaMailSender;
+//
+//    public EmailService(JavaMailSender javaMailSender) {
+//        this.javaMailSender = javaMailSender;
+//    }
 
 
     // Метод для отправки письма
-    public void sendEmail(String to, String subject, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject(subject);
-        message.setText(text);
-        javaMailSender.send(message);
+    public void sendEmail1(EmailMessage emailMessage) {
+//        SimpleMailMessage message = new SimpleMailMessage();
+//        message.setTo(emailMessage.getEmail());
+//        message.setSubject(emailMessage.getSubject());
+//        message.setText(emailMessage.getBody());
+//        javaMailSender.send(message);
+        System.out.println("попали в sendEmail в EmailService");
+        try {
+            System.out.println("попали в try в sendEmail");
+            EmailUtil.sendEmail(emailMessage.getEmail(), emailMessage.getSubject(), emailMessage.getBody());
+            System.out.println("Письмо отправлено.");
+        }catch (MessagingException | IOException e) {
+            System.out.println("попали в catch в sendEmail");
+            e.printStackTrace();
+        }
+
     }
 }
+
+
